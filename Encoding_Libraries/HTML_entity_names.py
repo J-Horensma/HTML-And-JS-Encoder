@@ -1,0 +1,27 @@
+HTML_ENTITY_NAMES = {
+    #SYMBOLS
+    '<' : '&lt;',
+    '/' : '&slash;',
+    '>' : '&gt;',
+    ' ' : '&nbsp;',
+    '=' : '&equals;',
+    '[' : '&lbrack;',
+    ']' : '&rbrack;',
+    "'" : '&apos;',
+    '"' : '&quote;',
+    ':' : '&colon;',
+    ';' : '&semi;',
+    '(' : '&lpar;',
+    ')' : '&rpar;',
+    '`' : '&grave;',
+    '$' : '&dollar;',
+    '{' : '&lcub;',
+    '}' : '&rcub;',
+    '+' : '&plus;',
+    '-' : '&minus;',
+    '\\' : '&bsol;',
+    '*' : '&ast;',
+    '@' : '&commat;',
+    '&' : '&amp;',
+    '#' : '&num;'   
+}
