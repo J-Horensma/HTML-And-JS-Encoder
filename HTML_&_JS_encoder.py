@@ -86,8 +86,7 @@ def exit(signum, frame):
 def encode_string(DICTIONARY):
         INPUT = multiline_input()
         signal.signal(signal.SIGINT, exit)
-        print('Enter a list of characters/continuous strings (Separated by spaces)')
-        EXCLUDED_CHARACTERS = list(input('Format: alert confirm prompt ( ): '))
+        EXCLUDED_CHARACTERS = list(input('Exclude any characters? (Format: abc123!@#): '))
         ENCODED_STRING = ''
         for CHARACTER in INPUT:
             if CHARACTER in DICTIONARY and CHARACTER not in EXCLUDED_CHARACTERS:
