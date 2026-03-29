@@ -123,7 +123,7 @@ def encode_string(DICTIONARY):
         INPUT = list(multiline_input().split('\n'))
         click.clear()
         signal.signal(signal.SIGINT, exit)
-        EXCLUDED_STRINGS = list(str(input('(Optional) Enter a list of characters/continuous strings, to leave unencoded (Separated by spaces): ')).split())
+        EXCLUDED_STRINGS = list(str(input('Enter a list of characters/continuous strings, separated by spaces, to leave unencoded (If any): ')).split())
         ENCODED_STRING = ''
         for LINE_INDEX, LINE in enumerate(INPUT):
             STRING_LIST_LINE_OFFSETS = get_string_list_line_offsets(LINE, EXCLUDED_STRINGS)
