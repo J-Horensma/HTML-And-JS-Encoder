@@ -88,7 +88,7 @@ def multiline_input():
 
 def get_string_list_line_offsets(LINE, STRING_LIST):
     LINE = LINE.strip()
-    if LINE and isinstance(STRIPPED, str):
+    if LINE and isinstance(LINE, str):
         STRING_LIST_OFFSETS = []
         for STRING in STRING_LIST:
             if STRING in LINE:
