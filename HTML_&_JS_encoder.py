@@ -136,12 +136,17 @@ def encode_string(DICTIONARY):
         return ENCODED_STRING
 
 if __name__ == '__main__':
-    while True:
-        DICTIONARY = choose_encoding_type()
-        ENCODED_STRING = encode_string(DICTIONARY)
-        click.clear()
-        print('Encoded String:\n')
-        print(f'{ENCODED_STRING}\n')
-        pyperclip.copy(ENCODED_STRING)
-        print('Copied to clipboard\n')
+    try:
+        while True:
+            DICTIONARY = choose_encoding_type()
+            ENCODED_STRING = encode_string(DICTIONARY)
+            click.clear()
+            print('Encoded String:\n')
+            print(f'{ENCODED_STRING}\n')
+            pyperclip.copy(ENCODED_STRING)
+            print('Copied to clipboard\n')
+            input('Press Enter: ')
+    except Exception as ERROR:
+        print('ERROR: ', ERROR)
         input('Press Enter: ')
+        signal.signal(signal.SIGINT, exit)
