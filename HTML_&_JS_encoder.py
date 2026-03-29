@@ -88,33 +88,37 @@ def multiline_input():
 
 def get_string_list_line_offsets(LINE, STRING_LIST):
     LINE = LINE.strip()
-    if LINE and isinstance(LINE, str):
-        STRING_LIST_OFFSETS = []
-        for STRING in STRING_LIST:
-            if STRING in LINE:
+    if LINE and STRING_LIST:
+        if isinstance(LINE, str) and isinstance(STRING_LIST, list):
+            STRING_LIST_OFFSETS = []
+            for STRING in STRING_LIST:
+                if STRING in LINE:
 
-                #LOOP AS MANY TIMES, AS THERE ARE, MATCHED STRINGS, IN THE LINE
-                #FOR THE CURRENT STRING ITERATION, OF THE "STRINGS_LIST" VARIABLE
-                STRING_COUNT = LINE.count(STRING)
-                for COUNT_INDEX in range(STRING_COUNT):
-                    if COUNT_INDEX > 0:
-                        STRING_START = LINE.find(STRING, STRING_START + len(STRING))
-                    else:
-                        STRING_START = LINE.find(STRING)
-                    if len(STRING) > 1:
-                        STRING_END = (STRING_START + len(STRING) - 1)
-                    else:
-                        STRING_END = STRING_START
+                    #LOOP AS MANY TIMES, AS THERE ARE MATCHED STRINGS, IN THE LINE VARIABLE,
+                    #FOR THE CURRENT STRING ITERATION, OF THE "STRING_LIST" LIST
+                    STRING_COUNT = LINE.count(STRING)
+                    for COUNT_INDEX in range(STRING_COUNT):
+                        if COUNT_INDEX > 0:
+                            STRING_START = LINE.find(STRING, STRING_START + len(STRING))
+                        else:
+                            STRING_START = LINE.find(STRING)
+                        if len(STRING) > 1:
+                            STRING_END = (STRING_START + len(STRING) - 1)
+                        else:
+                            STRING_END = STRING_START
 
-                    #ITERATE EACH CHARACTER, IN THE "LINE" VARIABLE, AND ADD EACH 
-                    #CHARACTER OFFSET, MATCHING THE CURRENTLY ITERATED STRING OFFSET RANGE, TO AN ARRAY
-                    for CHARACTER_INDEX, CHARACTER in enumerate(LINE):
-                        if CHARACTER_INDEX in range(STRING_START, (STRING_END + 1)):
-                            STRING_LIST_OFFSETS.append(CHARACTER_INDEX)
-        return STRING_LIST_OFFSETS
+                        #ITERATE EACH CHARACTER, IN THE "LINE" VARIABLE, AND ADD EACH 
+                        #CHARACTER OFFSET, MATCHING THE CURRENTLY ITERATED STRING OFFSET RANGE, TO A LIST,
+                        #THAT WILL BE RETURNED
+                        for CHARACTER_INDEX, CHARACTER in enumerate(LINE):
+                            if CHARACTER_INDEX in range(STRING_START, (STRING_END + 1)):
+                                STRING_LIST_OFFSETS.append(CHARACTER_INDEX)
+            return STRING_LIST_OFFSETS
+        else:
+            raise TypeError('get_string_list_line_offsets():\nOne or more incorrect variable types, were supplied')
     else:
-        raise TypeError('get_string_list_line_offsets():\nThe "LINE" variable, must be a string and cannot be empty')
-
+        raise EOFError('get_string_list_line_offsets():\nOne or more empty variables, were supplied')
+        
 def encode_string(DICTIONARY):
         INPUT = list(multiline_input().split('\n'))
         signal.signal(signal.SIGINT, exit)
