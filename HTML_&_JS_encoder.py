@@ -7,18 +7,25 @@ from Encoding_Libraries.unicode_code_point_escape import *
 from Encoding_Libraries.hex_escape import *
 from Encoding_Libraries.octal_escape import *
 from Encoding_Libraries.URL_encoding import *
-    
+
+def exit(signum, frame):
+    click.clear()
+    print('Exiting...')
+    time.sleep(1)
+    sys.exit(1)
+
 def choose_encoding_type():
+    signal.signal(signal.SIGINT, exit)
     while True:
         click.clear()
         print('HTML And JS Encoder')
         print('-------------------\n')
         ENCODING_OPTIONS = ['HTML Entity Names', 'Decimal HTML Entities', 'Hex HTML Entites', 'Unicode Escape', 'Unicode Code-Point Escape', 'Hex Escape','Octal Escape', 'base64 encoding', 'URL encoding']
-        i = 1
+        ENCODING_OPTIONS_INDEX = 1
         for VALUE in ENCODING_OPTIONS:
-            print(f'{i}.) {VALUE}')
-            i += 1
-        ENCODING_CHOICE = input(f'\nChoose an encoding type (1-{(i - 1)}): ')
+            print(f'{ENCODING_OPTIONS_INDEX}.) {VALUE}')
+            ENCODING_OPTIONS_INDEX += 1
+        ENCODING_CHOICE = input(f'\nChoose an encoding type (1-{(ENCODING_OPTIONS_INDEX - 1)}): ')
 
         if ENCODING_CHOICE == '1':
             DICTIONARY = HTML_ENTITY_NAMES
@@ -45,10 +52,12 @@ def choose_encoding_type():
            INPUT = multiline_input()
            INPUT_BYTES = INPUT.encode('utf-8')
            BASE64_BYTES = base64.b64encode(INPUT_BYTES)
-           BASE64_STRING = BASE64_BYTES.decode('utf-8')
+           BASE64_ENCODED_STRING = BASE64_BYTES.decode('utf-8')
            click.clear()
            print('Encoded String:\n')
-           print(BASE64_STRING,'\n')
+           print(BASE64_ENCODED_STRING,'\n')
+           pyperclip.copy(ENCODED_STRING)
+           print('Copied to clipboard\n')
            input('Press Enter: ')
         elif ENCODING_CHOICE == '9':
             DICTIONARY = URL
@@ -77,30 +86,58 @@ def multiline_input():
             continue
     return LINES
 
-def exit(signum, frame):
-    click.clear()
-    print('Exiting...')
-    time.sleep(1)
-    exit()
+def get_string_list_line_offsets(LINE, STRING_LIST):
+    LINE = LINE.strip()
+    if LINE and isinstance(STRIPPED, str):
+        STRING_LIST_OFFSETS = []
+        for STRING in STRING_LIST:
+            if STRING in LINE:
+
+                #LOOP AS MANY TIMES, AS THERE ARE, MATCHED STRINGS, IN THE LINE
+                #FOR THE CURRENT STRING ITERATION, OF THE "STRINGS_LIST" VARIABLE
+                STRING_COUNT = LINE.count(STRING)
+                for COUNT_INDEX in range(STRING_COUNT):
+                    if COUNT_INDEX > 0:
+                        STRING_START = LINE.find(STRING, STRING_START + len(STRING))
+                    else:
+                        STRING_START = LINE.find(STRING)
+                    if len(STRING) > 1:
+                        STRING_END = (STRING_START + len(STRING) - 1)
+                    else:
+                        STRING_END = STRING_START
+
+                    #ITERATE EACH CHARACTER, IN THE "LINE" VARIABLE, AND ADD EACH 
+                    #CHARACTER OFFSET, MATCHING THE CURRENTLY ITERATED STRING OFFSET RANGE, TO AN ARRAY
+                    for CHARACTER_INDEX, CHARACTER in enumerate(LINE):
+                        if CHARACTER_INDEX in range(STRING_START, (STRING_END + 1)):
+                            STRING_LIST_OFFSETS.append(CHARACTER_INDEX)
+        return STRING_LIST_OFFSETS
+    else:
+        raise TypeError('get_string_list_line_offsets():\nThe "LINE" variable, must be a string and cannot be empty')
 
 def encode_string(DICTIONARY):
-        INPUT = multiline_input()
+        INPUT = list(multiline_input().split('\n'))
         signal.signal(signal.SIGINT, exit)
-        EXCLUDED_CHARACTERS = list(input('Exclude any characters? (Format: abc123!@#): '))
+        print('(Optional) Enter a list of characters/continuous strings, to leave unencoded (Separated by spaces)')
+        EXCLUDED_STRINGS = list(str(input('Format: a 1 ! string: ')).split())
         ENCODED_STRING = ''
-        for CHARACTER in INPUT:
-            if CHARACTER in DICTIONARY and CHARACTER not in EXCLUDED_CHARACTERS:
-                CHARACTER = DICTIONARY[CHARACTER]
-            ENCODED_STRING = ENCODED_STRING + CHARACTER
+        for LINE_INDEX, LINE in enumerate(INPUT):
+            STRING_LIST_LINE_OFFSETS = get_string_list_line_offsets(LINE, EXCLUDED_STRINGS)
+            for CHARACTER_INDEX, CHARACTER in enumerate(LINE):
+                if CHARACTER in DICTIONARY and CHARACTER_INDEX not in STRING_LIST_LINE_OFFSETS:
+                    ENCODED_CHARACTER = DICTIONARY[CHARACTER]
+                    ENCODED_STRING = ENCODED_STRING + ENCODED_CHARACTER
+                else:
+                    ENCODED_STRING = ENCODED_STRING + CHARACTER    
+        return ENCODED_STRING
+
+if __name__ == '__main__':
+    while True:
+        DICTIONARY = choose_encoding_type()
+        ENCODED_STRING = encode_string(DICTIONARY)
         click.clear()
         print('Encoded String:\n')
         print(f'{ENCODED_STRING}\n')
         pyperclip.copy(ENCODED_STRING)
         print('Copied to clipboard\n')
         input('Press Enter: ')
-        return
-
-if __name__ == '__main__':
-    while True:
-        DICTIONARY = choose_encoding_type()
-        ENCODED_STRING = encode_string(DICTIONARY)      
