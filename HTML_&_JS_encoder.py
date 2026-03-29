@@ -121,9 +121,9 @@ def get_string_list_line_offsets(LINE, STRING_LIST):
         
 def encode_string(DICTIONARY):
         INPUT = list(multiline_input().split('\n'))
+        click.clear()
         signal.signal(signal.SIGINT, exit)
-        print('(Optional) Enter a list of characters/continuous strings, to leave unencoded (Separated by spaces)')
-        EXCLUDED_STRINGS = list(str(input('Format: a 1 ! string: ')).split())
+        EXCLUDED_STRINGS = list(str(input('(Optional) Enter a list of characters/continuous strings, to leave unencoded (Separated by spaces): ')).split())
         ENCODED_STRING = ''
         for LINE_INDEX, LINE in enumerate(INPUT):
             STRING_LIST_LINE_OFFSETS = get_string_list_line_offsets(LINE, EXCLUDED_STRINGS)
@@ -141,12 +141,12 @@ if __name__ == '__main__':
             DICTIONARY = choose_encoding_type()
             ENCODED_STRING = encode_string(DICTIONARY)
             click.clear()
-            print('Encoded String:\n')
-            print(f'{ENCODED_STRING}\n')
+            print('Encoded String:', '\n')
+            print(ENCODED_STRING, '\n')
             pyperclip.copy(ENCODED_STRING)
             print('Copied to clipboard\n')
             input('Press Enter: ')
     except Exception as ERROR:
-        print('ERROR: ', ERROR)
+        print(f'ERROR: {ERROR}')
         input('Press Enter: ')
         signal.signal(signal.SIGINT, exit)
