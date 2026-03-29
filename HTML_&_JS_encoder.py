@@ -49,7 +49,7 @@ def choose_encoding_type():
             DICTIONARY = OCTAL_ESCAPE
             return DICTIONARY
         elif ENCODING_CHOICE == '8':
-           INPUT = multiline_input()
+           INPUT = multi_line_input()
            INPUT_BYTES = INPUT.encode('utf-8')
            BASE64_BYTES = base64.b64encode(INPUT_BYTES)
            BASE64_ENCODED_STRING = BASE64_BYTES.decode('utf-8')
@@ -70,7 +70,7 @@ def choose_encoding_type():
 def close_sys_stdin(signum, frame):
     return
 
-def multiline_input():
+def multi_line_input():
     while True:
         click.clear()
         signal.signal(signal.SIGINT, close_sys_stdin)
@@ -120,7 +120,7 @@ def get_string_list_line_offsets(LINE, STRING_LIST):
         raise EOFError('get_string_list_line_offsets():\nOne or more empty variables, were supplied')
         
 def encode_string(DICTIONARY):
-        INPUT = list(multiline_input().split('\n'))
+        INPUT = list(multi_line_input().split('\n'))
         click.clear()
         signal.signal(signal.SIGINT, exit)
         EXCLUDED_STRINGS = list(str(input('Enter a list of characters/continuous strings, separated by spaces, to leave unencoded (If any): ')).split())
