@@ -25,7 +25,6 @@ def choose_encoding_type():
             print(f'{ENCODING_OPTIONS_INDEX}.) {VALUE}')
             ENCODING_OPTIONS_INDEX += 1
         ENCODING_CHOICE = input(f'\nChoose an encoding type (1-{(ENCODING_OPTIONS_INDEX - 1)}): ')
-
         if ENCODING_CHOICE == '1':
             DICTIONARY = HTML_ENTITY_NAMES
             return DICTIONARY
