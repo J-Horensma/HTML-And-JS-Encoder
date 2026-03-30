@@ -4,4 +4,4 @@
 All but one of this project's requirements, are pre-installed in python.
 
 ### **Encoding Options:**
-![Alt text](Images/HTML_And_JS_Encodeer_options.png)
+![Alt text](Images/HTML_And_JS_Encoder_options.png)
