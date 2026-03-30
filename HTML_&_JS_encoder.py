@@ -15,7 +15,6 @@ def exit(signum, frame):
     sys.exit(1)
 
 def choose_encoding_type():
-    signal.signal(signal.SIGINT, exit)
     while True:
         click.clear()
         print('HTML And JS Encoder')
@@ -73,10 +72,10 @@ def close_sys_stdin(signum, frame):
 def multi_line_input():
     while True:
         click.clear()
-        signal.signal(signal.SIGINT, close_sys_stdin)
+        signal.signal(signal.SIGBREAK, close_sys_stdin)
         print('1.) Type or paste a script, below')
         print('2.) Press "Enter", to ensure the last line registers')
-        print('3.) Press "ctrl" + "C" to continue):\n')
+        print('3.) Press "ctrl" + "break" to continue):\n')
         LINES = ''.join(sys.stdin.read()).strip()
         if LINES.strip():
             break
@@ -122,11 +121,13 @@ def get_string_list_line_offsets(LINE, STRING_LIST):
 def encode_string(DICTIONARY):
         INPUT = list(multi_line_input().split('\n'))
         click.clear()
-        signal.signal(signal.SIGINT, exit)
         EXCLUDED_STRINGS = list(str(input('Enter a list of characters/continuous strings, separated by spaces, to leave unencoded (If any): ')).split())
         ENCODED_STRING = ''
         for LINE_INDEX, LINE in enumerate(INPUT):
-            STRING_LIST_LINE_OFFSETS = get_string_list_line_offsets(LINE, EXCLUDED_STRINGS)
+            if EXCLUDED_STRINGS:
+                STRING_LIST_LINE_OFFSETS = get_string_list_line_offsets(LINE, EXCLUDED_STRINGS)
+            else:
+                STRING_LIST_LINE_OFFSETS = list()
             for CHARACTER_INDEX, CHARACTER in enumerate(LINE):
                 if CHARACTER in DICTIONARY and CHARACTER_INDEX not in STRING_LIST_LINE_OFFSETS:
                     ENCODED_CHARACTER = DICTIONARY[CHARACTER]
@@ -136,8 +137,9 @@ def encode_string(DICTIONARY):
         return ENCODED_STRING
 
 if __name__ == '__main__':
-    try:
-        while True:
+    while True:
+        try:
+            signal.signal(signal.SIGINT, exit)
             DICTIONARY = choose_encoding_type()
             ENCODED_STRING = encode_string(DICTIONARY)
             click.clear()
@@ -146,7 +148,6 @@ if __name__ == '__main__':
             pyperclip.copy(ENCODED_STRING)
             print('Copied to clipboard\n')
             input('Press Enter: ')
-    except Exception as ERROR:
-        print(ERROR)
-        input('Press Enter: ')
-        signal.signal(signal.SIGINT, exit)
+        except Exception as ERROR:
+            print(ERROR)
+            input('Press Enter: ')
