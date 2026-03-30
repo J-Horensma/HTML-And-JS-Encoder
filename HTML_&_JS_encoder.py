@@ -147,6 +147,6 @@ if __name__ == '__main__':
             print('Copied to clipboard\n')
             input('Press Enter: ')
     except Exception as ERROR:
-        print(f'ERROR: {ERROR}')
+        print(ERROR)
         input('Press Enter: ')
         signal.signal(signal.SIGINT, exit)
