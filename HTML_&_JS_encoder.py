@@ -84,7 +84,7 @@ def multi_line_input():
             continue
     return LINES
 
-def get_string_list_line_offsets(LINE, STRING_LIST):
+def string_list_line_offsets(LINE, STRING_LIST):
     LINE = LINE.strip()
     if LINE and STRING_LIST:
         if isinstance(LINE, str) and isinstance(STRING_LIST, list):
@@ -113,9 +113,9 @@ def get_string_list_line_offsets(LINE, STRING_LIST):
                                 STRING_LIST_OFFSETS.append(CHARACTER_INDEX)
             return STRING_LIST_OFFSETS
         else:
-            raise TypeError('get_string_list_line_offsets():\nOne or more incorrect variable types, were supplied')
+            raise TypeError('string_list_line_offsets():\nOne or more incorrect variable types, were supplied')
     else:
-        raise EOFError('get_string_list_line_offsets():\nOne or more empty variables, were supplied')
+        raise EOFError('string_list_line_offsets():\nOne or more empty variables, were supplied')
         
 def encode_string(DICTIONARY):
         INPUT = list(multi_line_input().split('\n'))
@@ -124,7 +124,7 @@ def encode_string(DICTIONARY):
         ENCODED_STRING = ''
         for LINE_INDEX, LINE in enumerate(INPUT):
             if EXCLUDED_STRINGS:
-                STRING_LIST_LINE_OFFSETS = get_string_list_line_offsets(LINE, EXCLUDED_STRINGS)
+                STRING_LIST_LINE_OFFSETS = string_list_line_offsets(LINE, EXCLUDED_STRINGS)
             else:
                 STRING_LIST_LINE_OFFSETS = list()
             for CHARACTER_INDEX, CHARACTER in enumerate(LINE):
